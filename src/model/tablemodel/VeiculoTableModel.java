@@ -107,4 +107,9 @@ public class VeiculoTableModel extends AbstractTableModel {
         veiculos.clear();
         fireTableDataChanged();
     }
+
+    public void setVeiculos(List<Veiculo> novaLista) {
+        this.veiculos = novaLista;
+        fireTableDataChanged();
+    }
 }

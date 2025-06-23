@@ -81,5 +81,10 @@ public class ClienteTableModel extends AbstractTableModel {
         clientes.add(c);
         fireTableRowsInserted(clientes.size() - 1, clientes.size() - 1);
     }
+
+    public void atualizarTabela(List<Cliente> novaLista) {
+        this.clientes = novaLista;
+        fireTableDataChanged();
+    }
 }
 

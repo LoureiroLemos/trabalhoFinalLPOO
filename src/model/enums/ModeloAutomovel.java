@@ -12,5 +12,7 @@ public enum ModeloAutomovel {
     GOL,
     CELTA,
     PALIO,
-    CORSA
+    CORSA, 
+    ARGO,
+    ONIX
 }

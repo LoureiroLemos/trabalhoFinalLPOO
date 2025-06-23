@@ -97,7 +97,15 @@ public class ViewVeiculo extends javax.swing.JFrame {
             )
         );
         
-        
+        //mascara da data
+        try {
+            javax.swing.text.MaskFormatter dataMask = new javax.swing.text.MaskFormatter("##/##/####");
+            dataMask.setPlaceholderCharacter('_');
+            txtDataLocacao.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(dataMask));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
+                
         txtBuscaCliente.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
             @Override
             public void insertUpdate(javax.swing.event.DocumentEvent e) {
@@ -168,7 +176,6 @@ public class ViewVeiculo extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         txtDataLocacao = new javax.swing.JFormattedTextField();
         btnLocar = new javax.swing.JButton();
-        btnLimpar = new javax.swing.JButton();
         pDevolver = new javax.swing.JPanel();
         jScrollPaneDevolver = new javax.swing.JScrollPane();
         tblVeiculosLocados = new javax.swing.JTable();
@@ -182,6 +189,11 @@ public class ViewVeiculo extends javax.swing.JFrame {
         jTabbedPane2.addTab("tab1", jTabbedPane3);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jLabel1.setText("Tipo de Veículo:");
 
@@ -279,7 +291,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
                                         .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(pIncluirLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cbMarca, 0, 584, Short.MAX_VALUE)
+                                    .addComponent(cbMarca, 0, 613, Short.MAX_VALUE)
                                     .addComponent(cbEstado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cbCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(cbModelo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -398,13 +410,6 @@ public class ViewVeiculo extends javax.swing.JFrame {
             }
         });
 
-        btnLimpar.setText("Limpar Campos");
-        btnLimpar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLimparActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout pLocarLayout = new javax.swing.GroupLayout(pLocar);
         pLocar.setLayout(pLocarLayout);
         pLocarLayout.setHorizontalGroup(
@@ -417,7 +422,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
                         .addGroup(pLocarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pLocarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, 85, Short.MAX_VALUE))
+                                .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(jLabel11)
                             .addComponent(jLabel12)
                             .addComponent(jLabel13))
@@ -435,14 +440,13 @@ public class ViewVeiculo extends javax.swing.JFrame {
                         .addComponent(txtDataLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(pLocarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pLocarLayout.createSequentialGroup()
-                                .addComponent(btnLimpar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 171, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLocarLayout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(btnLocar))
                             .addGroup(pLocarLayout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtDiasLocacao)))))
+                                .addComponent(txtDiasLocacao, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pLocarLayout.setVerticalGroup(
@@ -479,10 +483,8 @@ public class ViewVeiculo extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(txtDataLocacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(pLocarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnLocar)
-                    .addComponent(btnLimpar))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addComponent(btnLocar)
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Locar Veículo", pLocar);
@@ -514,7 +516,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
             .addGroup(pDevolverLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pDevolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneDevolver, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneDevolver, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pDevolverLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnDevolver)))
@@ -559,7 +561,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
             .addGroup(pVenderLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPaneVender, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneVender, javax.swing.GroupLayout.DEFAULT_SIZE, 738, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pVenderLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnVender)))
@@ -588,11 +590,11 @@ public class ViewVeiculo extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(btnVoltar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(672, Short.MAX_VALUE))
+            .addComponent(jTabbedPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -720,8 +722,15 @@ public class ViewVeiculo extends javax.swing.JFrame {
         Categoria categoria = (Categoria) cbCategoria.getSelectedItem();
         String tipo = (String) cbTipo.getSelectedItem();
 
+        // Verifica duplicidade de placa
+        if (VeiculoRepository.getInstance().buscarPorPlaca(placa) != null) {
+            JOptionPane.showMessageDialog(this, "Já existe um veículo com esta placa.");
+            return;
+        }
+
         Veiculo veiculo = null;
 
+        // Criação do veículo de acordo com o tipo e modelo
         if (tipo.equals("Automóvel")) {
             ModeloAutomovel modelo = (ModeloAutomovel) cbModelo.getSelectedItem();
             veiculo = new Automovel(ano, placa, valorCompra, estado, categoria, marca, modelo);
@@ -736,21 +745,15 @@ public class ViewVeiculo extends javax.swing.JFrame {
         if (veiculo != null) {
             VeiculoRepository.getInstance().adicionar(veiculo);
             veiculoTableModel.adicionar(veiculo);
-            
-            cbTipo1.setSelectedItem("Todos");
-            cbMarca1.setSelectedIndex(0);
-            cbCategoria1.setSelectedIndex(0);
-            
+
+            // Atualiza outras tabelas também
             atualizarTabelaVeiculosDisponiveis();
             atualizarTabelaVeiculosVendaveis();
-            JOptionPane.showMessageDialog(null, "Veículo incluído com sucesso.");
+
+            JOptionPane.showMessageDialog(this, "Veículo incluído com sucesso.");
             limparCampos();
         }
     }//GEN-LAST:event_btnIncluirActionPerformed
-
-    private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLimparActionPerformed
 
     private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed
         // TODO add your handling code here:
@@ -791,6 +794,14 @@ public class ViewVeiculo extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnVenderActionPerformed
 
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        veiculoTableModel.setVeiculos(VeiculoRepository.getInstance().getTodos());
+        atualizarTabelaVeiculosDisponiveis();
+        atualizarTabelaVeiculosLocados();
+        atualizarTabelaVeiculosVendaveis();
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -820,7 +831,6 @@ public class ViewVeiculo extends javax.swing.JFrame {
     private javax.swing.JButton btnDevolver;
     private javax.swing.JButton btnFiltrarVeiculos;
     private javax.swing.JButton btnIncluir;
-    private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnLocar;
     private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVoltar;

@@ -4,8 +4,10 @@
  */
 package view;
 
+import javax.swing.JOptionPane;
 import model.Cliente;
 import model.tablemodel.ClienteTableModel;
+import repository.ClienteRepository;
 
 /**
  *
@@ -23,6 +25,15 @@ public class ViewCliente extends javax.swing.JFrame {
         clienteTableModel = new ClienteTableModel();
         tblClientes.setModel(clienteTableModel);
         this.setLocationRelativeTo(null);
+        
+                //mascara do cpf
+        try {
+            javax.swing.text.MaskFormatter cpfMask = new javax.swing.text.MaskFormatter("###.###.###-##");
+            cpfMask.setPlaceholderCharacter('_');
+            txtCpf.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(cpfMask));
+        } catch (java.text.ParseException ex) {
+            ex.printStackTrace();
+        }
     }
 
     /**
@@ -43,18 +54,23 @@ public class ViewCliente extends javax.swing.JFrame {
         txtNome = new javax.swing.JTextField();
         txtSobrenome = new javax.swing.JTextField();
         txtRg = new javax.swing.JTextField();
-        txtCpf = new javax.swing.JTextField();
         txtEndereco = new javax.swing.JTextField();
         btnIncluir = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnAtualizar = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
+        txtCpf = new javax.swing.JFormattedTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblClientes = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Cadastro de Clientes");
         setSize(new java.awt.Dimension(0, 0));
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         labelNome.setText("Nome:");
 
@@ -109,7 +125,7 @@ public class ViewCliente extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(btnVoltar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 214, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 217, Short.MAX_VALUE)
                         .addComponent(btnExcluir)
                         .addGap(18, 18, 18)
                         .addComponent(btnAtualizar)
@@ -127,8 +143,8 @@ public class ViewCliente extends javax.swing.JFrame {
                             .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 460, Short.MAX_VALUE)
                             .addComponent(txtSobrenome)
                             .addComponent(txtRg)
-                            .addComponent(txtCpf)
-                            .addComponent(txtEndereco))))
+                            .addComponent(txtEndereco)
+                            .addComponent(txtCpf))))
                 .addContainerGap(43, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -205,24 +221,42 @@ public class ViewCliente extends javax.swing.JFrame {
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
         // TODO add your handling code here:
-        String nome = txtNome.getText();
-        String sobrenome = txtSobrenome.getText();
-        String rg = txtRg.getText();
-        String cpf = txtCpf.getText();
-        String endereco = txtEndereco.getText();
-        
+        String nome = txtNome.getText().trim();
+        String sobrenome = txtSobrenome.getText().trim();
+        String rg = txtRg.getText().trim();
+        String cpf = txtCpf.getText().trim();
+        String endereco = txtEndereco.getText().trim();
 
-        
-        if(!nome.isEmpty() && !cpf.isEmpty()){
-            Cliente novo = new Cliente(nome, sobrenome, rg, cpf, endereco);
-            clienteTableModel.adicionarCliente(novo);
-            
-            txtNome.setText("");
-            txtSobrenome.setText("");
-            txtRg.setText("");
-            txtCpf.setText("");
-            txtEndereco.setText("");
+        if (nome.isEmpty() || cpf.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Nome e CPF são obrigatórios.");
+            return;
         }
+
+        if (ClienteRepository.getInstance().buscarPorCpf(cpf) != null) {
+            JOptionPane.showMessageDialog(this, "Já existe um cliente com este CPF.");
+            return;
+        }
+
+        // (Opcional) Verifica se já existe nome + sobrenome
+        for (Cliente c : ClienteRepository.getInstance().getTodos()) {
+            if (c.getNome().equalsIgnoreCase(nome) && c.getSobrenome().equalsIgnoreCase(sobrenome)) {
+                int opcao = JOptionPane.showConfirmDialog(this,
+                    "Já existe um cliente com o mesmo nome e sobrenome. Deseja continuar?",
+                    "Aviso", JOptionPane.YES_NO_OPTION);
+                if (opcao != JOptionPane.YES_OPTION) return;
+                break;
+            }
+        }
+
+        Cliente novo = new Cliente(nome, sobrenome, rg, cpf, endereco);
+        ClienteRepository.getInstance().adicionar(novo);
+        clienteTableModel.atualizarTabela(ClienteRepository.getInstance().getTodos());
+
+        txtNome.setText("");
+        txtSobrenome.setText("");
+        txtRg.setText("");
+        txtCpf.setText("");
+        txtEndereco.setText("");
     }//GEN-LAST:event_btnIncluirActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
@@ -259,6 +293,11 @@ public class ViewCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_btnVoltarActionPerformed
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+        // TODO add your handling code here:
+        clienteTableModel.atualizarTabela(ClienteRepository.getInstance().getTodos());
+    }//GEN-LAST:event_formWindowActivated
 
     /**
      * @param args the command line arguments
@@ -308,7 +347,7 @@ public class ViewCliente extends javax.swing.JFrame {
     private javax.swing.JLabel labelRg;
     private javax.swing.JLabel labelSobrenome;
     private javax.swing.JTable tblClientes;
-    private javax.swing.JTextField txtCpf;
+    private javax.swing.JFormattedTextField txtCpf;
     private javax.swing.JTextField txtEndereco;
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtRg;

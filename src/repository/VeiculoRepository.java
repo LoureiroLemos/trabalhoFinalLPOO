@@ -24,9 +24,6 @@ public class VeiculoRepository {
     
     public VeiculoRepository(){
         this.veiculos = new ArrayList<>();
-        adicionar(new model.Automovel(2020, "ABC-1234", 30000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.FIAT, model.enums.ModeloAutomovel.PALIO));
-        adicionar(new model.Motocicleta(2022, "XYZ-5678", 15000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.HONDA, model.enums.ModeloMotocicleta.CBR500));
-        adicionar(new model.Van(2018, "DEF-9012", 60000.0, Estado.LOCADO, Categoria.LUXO, Marca.MERCEDES, model.enums.ModeloVan.SPRINTER));
     }
     
         public static VeiculoRepository getInstance() {

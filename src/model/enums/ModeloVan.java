@@ -9,7 +9,9 @@ package model.enums;
  * @author loure
  */
 public enum ModeloVan {
-    VW,
-    KOMBI,
-    SPRINTER
+    SPRINTER,
+    MASTER,
+    DUCATO,
+    TRANSIT,
+    KOMBI
 }

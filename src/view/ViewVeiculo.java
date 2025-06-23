@@ -30,6 +30,7 @@ import model.enums.ModeloMotocicleta;
 import model.enums.ModeloVan;
 import model.tablemodel.VeiculoLocacaoTableModel;
 import model.tablemodel.VeiculoTableModel;
+import model.tablemodel.VeiculoVendaTableModel;
 import repository.ClienteRepository;
 import repository.VeiculoRepository;
 /**
@@ -40,6 +41,8 @@ public class ViewVeiculo extends javax.swing.JFrame {
     
     private VeiculoTableModel veiculoTableModel;
     private VeiculoLocacaoTableModel veiculoLocacaoTableModel;
+    private VeiculoLocacaoTableModel veiculoDevolucaoTableModel;
+    private VeiculoVendaTableModel veiculoVendaTableModel;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ViewVeiculo.class.getName());
 
@@ -54,10 +57,25 @@ public class ViewVeiculo extends javax.swing.JFrame {
         veiculoLocacaoTableModel = new VeiculoLocacaoTableModel(new ArrayList<>());
         tblVeiculosDisponiveis.setModel(veiculoLocacaoTableModel);
         
+                veiculoDevolucaoTableModel = new VeiculoLocacaoTableModel(new ArrayList<>());
+        tblVeiculosLocados.setModel(veiculoDevolucaoTableModel);
+        atualizarTabelaVeiculosLocados();
+        
+        veiculoVendaTableModel = new VeiculoVendaTableModel(new ArrayList<>());
+        tblVeiculosVendaveis.setModel(veiculoVendaTableModel);
+        atualizarTabelaVeiculosVendaveis();
+        
         //preenche comboBox de Inclusão de veículos
         cbTipo.addActionListener(e -> atualizarModelos());
         cbTipo.addActionListener(e -> atualizarCombosPorTipo());
         this.setLocationRelativeTo(null);
+        
+        atualizarCombosPorTipo();
+        atualizarModelos();
+
+        
+        atualizarTabelaVeiculosDisponiveis();
+        atualizarTabelaVeiculosVendaveis();
         
         //preenche comboBox de Locação de veículos
         cbTipo1.removeAllItems();
@@ -67,7 +85,6 @@ public class ViewVeiculo extends javax.swing.JFrame {
         cbTipo1.addItem("Van");
         
         preencherFiltrosLocacao();
-        
         
         //tentativa de formatar o valor de compra
         java.text.NumberFormat moedaFormat = java.text.NumberFormat.getNumberInstance(new java.util.Locale("pt", "BR"));
@@ -96,32 +113,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 filtrarClientes();
             }
-        });
-        
-
-      
-        
-        
-        // Automóveis
-        Veiculo a1 = new Automovel(2021, "AAA-1234", 52000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.GM, ModeloAutomovel.CORSA);
-        Veiculo a2 = new Automovel(2022, "BBB-5678", 67000.0, Estado.DISPONIVEL, Categoria.INTERMEDIARIO, Marca.VW, ModeloAutomovel.GOL);
-        Veiculo a3 = new Automovel(2019, "CCC-9999", 85000.0, Estado.NOVO, Categoria.LUXO, Marca.FIAT, ModeloAutomovel.GOL);
-
-        // Motocicletas
-        Veiculo m1 = new Motocicleta(2020, "DDD-0001", 15000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.HONDA, ModeloMotocicleta.CG125);
-        Veiculo m2 = new Motocicleta(2023, "EEE-1111", 28000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.HARLEY_DAVIDSON, ModeloMotocicleta.CG125);
-
-        // Vans
-        Veiculo v1 = new Van(2017, "FFF-2222", 70000.0, Estado.DISPONIVEL, Categoria.INTERMEDIARIO, Marca.VW, ModeloVan.SPRINTER);
-        Veiculo v2 = new Van(2021, "GGG-3333", 88000.0, Estado.DISPONIVEL, Categoria.LUXO, Marca.MERCEDES, ModeloVan.SPRINTER);
-
-        // Registro no repositório e tabelas
-        for (Veiculo v : List.of(a1, a2, a3, m1, m2, v1, v2)) {
-            VeiculoRepository.getInstance().adicionar(v);
-            veiculoTableModel.adicionar(v);
-        }
-        
-
+        });  
     }
 
     /**
@@ -178,7 +170,13 @@ public class ViewVeiculo extends javax.swing.JFrame {
         btnLocar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         pDevolver = new javax.swing.JPanel();
+        jScrollPaneDevolver = new javax.swing.JScrollPane();
+        tblVeiculosLocados = new javax.swing.JTable();
+        btnDevolver = new javax.swing.JButton();
         pVender = new javax.swing.JPanel();
+        jScrollPaneVender = new javax.swing.JScrollPane();
+        tblVeiculosVendaveis = new javax.swing.JTable();
+        btnVender = new javax.swing.JButton();
         btnVoltar = new javax.swing.JButton();
 
         jTabbedPane2.addTab("tab1", jTabbedPane3);
@@ -489,28 +487,92 @@ public class ViewVeiculo extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Locar Veículo", pLocar);
 
+        tblVeiculosLocados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPaneDevolver.setViewportView(tblVeiculosLocados);
+
+        btnDevolver.setText("Devolver Veículo");
+        btnDevolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDevolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout pDevolverLayout = new javax.swing.GroupLayout(pDevolver);
         pDevolver.setLayout(pDevolverLayout);
         pDevolverLayout.setHorizontalGroup(
             pDevolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 711, Short.MAX_VALUE)
+            .addGroup(pDevolverLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pDevolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneDevolver, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pDevolverLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDevolver)))
+                .addContainerGap())
         );
         pDevolverLayout.setVerticalGroup(
             pDevolverLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 466, Short.MAX_VALUE)
+            .addGroup(pDevolverLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneDevolver, javax.swing.GroupLayout.DEFAULT_SIZE, 419, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnDevolver)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Devolver Veículo", pDevolver);
+
+        tblVeiculosVendaveis.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPaneVender.setViewportView(tblVeiculosVendaveis);
+
+        btnVender.setText("Vender");
+        btnVender.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVenderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pVenderLayout = new javax.swing.GroupLayout(pVender);
         pVender.setLayout(pVenderLayout);
         pVenderLayout.setHorizontalGroup(
             pVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 711, Short.MAX_VALUE)
+            .addGroup(pVenderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPaneVender, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pVenderLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnVender)))
+                .addContainerGap())
         );
         pVenderLayout.setVerticalGroup(
             pVenderLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 466, Short.MAX_VALUE)
+            .addGroup(pVenderLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPaneVender, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(btnVender)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Vender Veículo", pVender);
@@ -601,6 +663,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
 
             JOptionPane.showMessageDialog(null, "Veículo locado com sucesso.");
             atualizarTabelaVeiculosDisponiveis();
+            atualizarTabelaVeiculosLocados();
             
             cbTipo1.setSelectedItem("Todos");
             cbMarca1.setSelectedIndex(0);
@@ -672,7 +735,14 @@ public class ViewVeiculo extends javax.swing.JFrame {
 
         if (veiculo != null) {
             VeiculoRepository.getInstance().adicionar(veiculo);
-            veiculoTableModel.adicionar(veiculo); // <- Atualiza a tabela
+            veiculoTableModel.adicionar(veiculo);
+            
+            cbTipo1.setSelectedItem("Todos");
+            cbMarca1.setSelectedIndex(0);
+            cbCategoria1.setSelectedIndex(0);
+            
+            atualizarTabelaVeiculosDisponiveis();
+            atualizarTabelaVeiculosVendaveis();
             JOptionPane.showMessageDialog(null, "Veículo incluído com sucesso.");
             limparCampos();
         }
@@ -681,6 +751,45 @@ public class ViewVeiculo extends javax.swing.JFrame {
     private void btnLimparActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimparActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLimparActionPerformed
+
+    private void btnDevolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDevolverActionPerformed
+        // TODO add your handling code here:
+        int linha = tblVeiculosLocados.getSelectedRow();
+        if (linha == -1) {
+            JOptionPane.showMessageDialog(this, "Selecione um veículo para devolver.");
+            return;
+        }
+
+        Veiculo v = veiculoDevolucaoTableModel.getVeiculoAt(linha);
+        v.devolver();
+        JOptionPane.showMessageDialog(this, "Veículo devolvido com sucesso.");
+
+        atualizarTabelaVeiculosLocados();
+        atualizarTabelaVeiculosDisponiveis();
+        
+    }//GEN-LAST:event_btnDevolverActionPerformed
+
+    private void btnVenderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVenderActionPerformed
+        // TODO add your handling code here:
+        int linha = tblVeiculosVendaveis.getSelectedRow();
+    if (linha == -1) {
+        JOptionPane.showMessageDialog(this, "Selecione um veículo para vender.");
+        return;
+    }
+
+    Veiculo veiculo = veiculoVendaTableModel.getVeiculoAt(linha);
+
+    int confirm = JOptionPane.showConfirmDialog(this,
+        "Deseja realmente vender o veículo de placa " + veiculo.getPlaca() + "?",
+        "Confirmar Venda", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        veiculo.vender();
+        JOptionPane.showMessageDialog(this, "Veículo vendido com sucesso.");
+        atualizarTabelaVeiculosVendaveis();
+        atualizarTabelaVeiculosDisponiveis(); // se quiser remover da locação também
+    }
+    }//GEN-LAST:event_btnVenderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -708,10 +817,12 @@ public class ViewVeiculo extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDevolver;
     private javax.swing.JButton btnFiltrarVeiculos;
     private javax.swing.JButton btnIncluir;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnLocar;
+    private javax.swing.JButton btnVender;
     private javax.swing.JButton btnVoltar;
     private javax.swing.JComboBox<Categoria> cbCategoria;
     private javax.swing.JComboBox<Categoria> cbCategoria1;
@@ -740,6 +851,8 @@ public class ViewVeiculo extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPaneDevolver;
+    private javax.swing.JScrollPane jScrollPaneVender;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JTabbedPane jTabbedPane3;
@@ -750,6 +863,8 @@ public class ViewVeiculo extends javax.swing.JFrame {
     private javax.swing.JSpinner spAno;
     private javax.swing.JTable tblVeiculos;
     private javax.swing.JTable tblVeiculosDisponiveis;
+    private javax.swing.JTable tblVeiculosLocados;
+    private javax.swing.JTable tblVeiculosVendaveis;
     private javax.swing.JTextField txtBuscaCliente;
     private javax.swing.JFormattedTextField txtDataLocacao;
     private javax.swing.JTextField txtDiasLocacao;
@@ -758,7 +873,8 @@ public class ViewVeiculo extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void atualizarModelos() {
-        String tipoSelecionado = cbTipo1.getSelectedItem() != null ? cbTipo1.getSelectedItem().toString() : "Todos";
+        String tipoSelecionado = (String) cbTipo.getSelectedItem();
+                //cbTipo1.getSelectedItem() != null ? cbTipo1.getSelectedItem().toString() : "Todos";
 
         cbModelo.removeAllItems();
         
@@ -911,7 +1027,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
         cbCategoria.setSelectedIndex(0);
         cbMarca.setSelectedIndex(0);
         cbTipo.setSelectedIndex(0);
-        cbModelo.removeAllItems();
+        cbModelo.setSelectedIndex(0);
     }
     
     private List<Veiculo> filtrarVeiculosDisponiveis() {
@@ -920,7 +1036,7 @@ public class ViewVeiculo extends javax.swing.JFrame {
         Categoria categoria = (Categoria) cbCategoria1.getSelectedItem();
 
         return VeiculoRepository.getInstance().getTodos().stream()
-            .filter(v -> v.getEstado() == Estado.DISPONIVEL)
+            .filter(v -> v.getEstado() == Estado.DISPONIVEL || v.getEstado() == Estado.NOVO)
             .filter(v -> tipoSelecionado == null || tipoSelecionado.equals("Todos") ||
                 (tipoSelecionado.equals("Automóvel") && v instanceof Automovel) ||
                 (tipoSelecionado.equals("Motocicleta") && v instanceof Motocicleta) ||
@@ -928,6 +1044,20 @@ public class ViewVeiculo extends javax.swing.JFrame {
             .filter(v -> marca == null || v.getMarca() == marca)
             .filter(v -> categoria == null || v.getCategoria() == categoria)
             .collect(Collectors.toList());
+    }
+
+    private void atualizarTabelaVeiculosLocados() {
+        List<Veiculo> locados = VeiculoRepository.getInstance().getTodos().stream()
+            .filter(v -> v.getEstado() == Estado.LOCADO)
+            .collect(Collectors.toList());
+        veiculoDevolucaoTableModel.setVeiculos(locados);
+    }
+
+    private void atualizarTabelaVeiculosVendaveis() {
+        List<Veiculo> disponiveis = VeiculoRepository.getInstance().getTodos().stream()
+            .filter(v -> v.getEstado() == Estado.DISPONIVEL || v.getEstado() == Estado.NOVO)
+            .collect(Collectors.toList());
+        veiculoVendaTableModel.setVeiculos(disponiveis);
     }
     
 

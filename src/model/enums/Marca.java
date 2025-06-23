@@ -14,6 +14,7 @@ public enum Marca {
     FIAT,
     HONDA, 
     MERCEDES,
-    HARLEY_DAVIDSON;
-    
+    HARLEY_DAVIDSON,
+    FORD,
+    RENAULT    
 }

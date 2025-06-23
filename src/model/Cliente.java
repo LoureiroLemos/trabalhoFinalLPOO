@@ -24,6 +24,11 @@ public class Cliente {
         this.endereco = endereço;
     }
 
+    @Override
+    public String toString() {
+        return nome + " " + sobrenome + " - CPF: " + cpf;
+    }
+
     public String getNome() {
         return nome;
     }

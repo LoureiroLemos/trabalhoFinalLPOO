@@ -122,11 +122,11 @@ public class VeiculoService {
     }
     
     public List<Veiculo> listarTodosVeiculos() {
-        return veiculoRepository.listarTodos();
+        return veiculoRepository.getTodos();
     }
     
        public List<Veiculo> filtrarVeiculos(Class<? extends Veiculo> tipoClasse, Marca marca, Categoria categoria, Estado estado) {
-        List<Veiculo> resultado = veiculoRepository.listarTodos();
+        List<Veiculo> resultado = veiculoRepository.getTodos();
 
         if (tipoClasse != null) {
             resultado = resultado.stream()
@@ -156,7 +156,7 @@ public class VeiculoService {
             return false;
         }
         
-        return veiculoRepository.listarTodos().stream()
+        return veiculoRepository.getTodos().stream()
                 .filter(v -> v.getEstado() == Estado.LOCADO)
                 .anyMatch(v -> v.getLocacao() != null && Objects.equals(v.getLocacao().getCliente().getCpf(), cliente.getCpf()));
     }

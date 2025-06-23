@@ -11,5 +11,6 @@ package model.enums;
 public enum ModeloAutomovel {
     GOL,
     CELTA,
-    PALIO 
+    PALIO,
+    CORSA
 }

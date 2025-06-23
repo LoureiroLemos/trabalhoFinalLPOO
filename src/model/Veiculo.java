@@ -93,7 +93,4 @@ public abstract class Veiculo implements VeiculoI {
         }
         return valor;
     }
-
-    
-
 }

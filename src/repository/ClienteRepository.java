@@ -22,9 +22,9 @@ public class ClienteRepository {
     public ClienteRepository(){
         this.clientes = new ArrayList<>();
 
-        adicionar(new Cliente("João", "Silva", "112233445", "12345678901", "Rua A, 123" ));
-        adicionar(new Cliente("Maria", "Souza", "987654321", "10987654321", "Rua B, 456" ));
-        adicionar(new Cliente("Carlos", "Souza", "111222333", "123123123123", "Rua C, 789" ));
+//        adicionar(new Cliente("João", "Silva", "112233445", "12345678901", "Rua A, 123" ));
+//        adicionar(new Cliente("Maria", "Souza", "987654321", "10987654321", "Rua B, 456" ));
+//        adicionar(new Cliente("Carlos", "Souza", "111222333", "123123123123", "Rua C, 789" ));
     }
     
     public static ClienteRepository getInstance() {

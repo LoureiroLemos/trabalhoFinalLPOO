@@ -31,15 +31,15 @@ public class VeiculoRepository {
     public VeiculoRepository(){
         this.veiculos = new ArrayList<>();
         
-    adicionar(new Automovel(2022, "ABC-1234", 40000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.FIAT, ModeloAutomovel.ARGO));
-    adicionar(new Automovel(2023, "DEF-5678", 70000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.VW, ModeloAutomovel.GOL));
-    adicionar(new Automovel(2021, "GHI-9012", 120000.0, Estado.DISPONIVEL, Categoria.LUXO, Marca.GM, ModeloAutomovel.ONIX));
-
-    adicionar(new Motocicleta(2020, "JKL-3456", 15000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.HONDA, ModeloMotocicleta.CG125));
-    adicionar(new Motocicleta(2024, "MNO-7890", 35000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.HARLEY_DAVIDSON, ModeloMotocicleta.STREETBOB));
-
-    adicionar(new Van(2019, "PQR-1122", 90000.0, Estado.DISPONIVEL, Categoria.INTERMEDIARIO, Marca.FIAT, ModeloVan.DUCATO));
-    adicionar(new Van(2023, "STU-3344", 180000.0, Estado.NOVO, Categoria.LUXO, Marca.MERCEDES, ModeloVan.SPRINTER));
+//    adicionar(new Automovel(2022, "ABC-1234", 40000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.FIAT, ModeloAutomovel.ARGO));
+//    adicionar(new Automovel(2023, "DEF-5678", 70000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.VW, ModeloAutomovel.GOL));
+//    adicionar(new Automovel(2021, "GHI-9012", 120000.0, Estado.DISPONIVEL, Categoria.LUXO, Marca.GM, ModeloAutomovel.ONIX));
+//
+//    adicionar(new Motocicleta(2020, "JKL-3456", 15000.0, Estado.DISPONIVEL, Categoria.POPULAR, Marca.HONDA, ModeloMotocicleta.CG125));
+//    adicionar(new Motocicleta(2024, "MNO-7890", 35000.0, Estado.NOVO, Categoria.INTERMEDIARIO, Marca.HARLEY_DAVIDSON, ModeloMotocicleta.STREETBOB));
+//
+//    adicionar(new Van(2019, "PQR-1122", 90000.0, Estado.DISPONIVEL, Categoria.INTERMEDIARIO, Marca.FIAT, ModeloVan.DUCATO));
+//    adicionar(new Van(2023, "STU-3344", 180000.0, Estado.NOVO, Categoria.LUXO, Marca.MERCEDES, ModeloVan.SPRINTER));
         
         
     }
